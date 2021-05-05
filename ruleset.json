@@ -1,0 +1,70 @@
+{
+  "Q0": {
+    "a": {
+      "next_state": "Q1",
+      "replacement_symbol": "x",
+      "direction": "R"
+    },
+    "y": {
+      "next_state": "Q3",
+      "replacement_symbol": "y",
+      "direction": "R"
+    }
+  },
+  "Q3": {
+    "y": {
+      "next_state": "Q3",
+      "replacement_symbol": "y",
+      "direction": "R"
+    },
+    "_": {
+      "next_state": "Q4",
+      "replacement_symbol": "_",
+      "direction": "L"
+    },
+    "a": {
+      "next_state": "Qf",
+      "replacement_symbol": "a",
+      "direction": "R"
+    },
+    "b": {
+      "next_state": "Qf",
+      "replacement_symbol": "b",
+      "direction": "R"
+    }
+  },
+  "Q1": {
+    "b": {
+      "next_state": "Q2",
+      "replacement_symbol": "y",
+      "direction": "L"
+    },
+    "a": {
+      "next_state": "Q1",
+      "replacement_symbol": "a",
+      "direction": "R"
+    },
+    "y": {
+      "next_state": "Q1",
+      "replacement_symbol": "y",
+      "direction": "R"
+    }
+  },
+  "Q2": {
+    "a": {
+      "next_state": "Q2",
+      "replacement_symbol": "a",
+      "direction": "L"
+    },
+    "y": {
+      "next_state": "Q2",
+      "replacement_symbol": "y",
+      "direction": "L"
+    },
+    "x": {
+      "next_state": "Q0",
+      "replacement_symbol": "x",
+      "direction": "R"
+    }
+  }
+}

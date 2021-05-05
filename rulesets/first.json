@@ -1,0 +1,14 @@
+{
+  "Q0": {
+    "a": {
+      "next_state": "Q0",
+      "replacement_symbol": "a",
+      "direction": "R"
+    },
+    "_": {
+      "next_state": "Q1",
+      "replacement_symbol": "_",
+      "direction": "L"
+    }
+  }
+}
