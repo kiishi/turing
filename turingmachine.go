@@ -23,7 +23,8 @@ type TuringMachine struct {
 	Controller  *statemachine.StateMachine
 	AcceptState string //state name for the accept state
 	RejectState string
-	RuleSets map[string]map[string]Ruleset
+	HaltState   string
+	RuleSets    map[string]map[string]Ruleset
 }
 
 func (t *TuringMachine) CurrentTapeValue() rune {
@@ -83,7 +84,6 @@ func (t *TuringMachine) ProcessAndMoveCursor(character rune) {
 
 }
 
-//func (t *TuringMachine) UpdateCurrentS
 type TuringMachineConfiguration struct {
 	StateName            string
 	ParentTurningMachine *TuringMachine
@@ -177,11 +177,13 @@ func (t *TuringMachine) StartComputing() {
 
 	t.RejectState = t.Prompt("Which is the reject state? >>", scanner)
 
+	t.HaltState = t.Prompt("Which is the halt state? >>", scanner)
+
 	t.InitializeController(inputStatesArr)
 
 	for {
 		t.ProcessAndMoveCursor(t.CurrentTapeValue())
-		if t.Controller.GetCurrentState().GetIdentifier() == t.AcceptState || t.Controller.GetCurrentState().GetIdentifier() == t.RejectState {
+		if t.Controller.GetCurrentState().GetIdentifier() == t.AcceptState || t.Controller.GetCurrentState().GetIdentifier() == t.RejectState || t.Controller.GetCurrentState().GetIdentifier() == t.HaltState {
 			break
 		}
 	}

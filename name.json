@@ -1,0 +1,9 @@
+{
+  "StateName": {
+    "InputSymbol": {
+      "next_state": "NextStateName",
+      "replacement_symbol": "ReplacementSymbol",
+      "direction": "HeadDirection (L or R)"
+    }
+  }
+}

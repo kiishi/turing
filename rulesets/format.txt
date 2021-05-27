@@ -1,0 +1,11 @@
+
+The format of the ruleset can be seen below
+{
+  "StateName": {
+    "InputSymbol": {
+      "next_state": "NextStateName",
+      "replacement_symbol": "ReplacementSymbol",
+      "direction": "HeadDirection (L or R)"
+    }
+  }
+}
