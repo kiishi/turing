@@ -1,8 +1,9 @@
 package main
 
-
+import "os"
 
 func main(){
+	args := os.Args[1:]
 	machine := TuringMachine{}
-	machine.StartComputing()
+	machine.StartComputing(args[0])
 }

@@ -48,6 +48,11 @@
       "next_state": "Q1",
       "replacement_symbol": "y",
       "direction": "R"
+    },
+    "_": {
+      "next_state": "Qf",
+      "replacement_symbol": "_",
+      "direction": "R"
     }
   },
   "Q2": {

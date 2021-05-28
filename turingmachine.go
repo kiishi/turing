@@ -22,8 +22,8 @@ type TuringMachine struct {
 	Tape        []rune
 	Controller  *statemachine.StateMachine
 	AcceptState string //state name for the accept state
-	RejectState string
-	HaltState   string
+	HaltOrRejectState   string
+	TapeSymbols map[string]string
 	RuleSets    map[string]map[string]Ruleset
 }
 
@@ -58,15 +58,12 @@ func (t *TuringMachine) ProcessAndMoveCursor(character rune) {
 			if t.cursor >= len(t.InputString) {
 				//treat as empty string _
 				if characterConfiguration.Direction == "R" || characterConfiguration.Direction == "r" {
-					//t.cursor--
+					t.Controller.Emit(currentStateName +  characterConfiguration.NextState)
 					//send to reject state kos its going overboard
-					err := t.Controller.SetState(t.RejectState)
-					if err != nil {
-						panic("Reject state invalid")
-					}
+					return
 				} else {
 					t.cursor--
-					t.Controller.Emit(currentStateName + characterConfiguration.NextState)
+					t.Controller.Emit(currentStateName +  characterConfiguration.NextState)
 				}
 				return
 			}
@@ -147,12 +144,13 @@ func (t *TuringMachine) IsCompleted() bool {
 	return isComplete
 }
 
-func (t *TuringMachine) StartComputing() {
+
+func (t *TuringMachine) StartComputing(ruleSetFileName string ) {
 
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Split(bufio.ScanLines)
 	fmt.Println("Loading rule set from ruleset.json...")
-	file, err := os.Open("ruleset.json")
+	file, err := os.Open(ruleSetFileName)
 	if err != nil {
 		if os.IsNotExist(err) {
 			fmt.Println("missing ruleset.json")
@@ -175,17 +173,27 @@ func (t *TuringMachine) StartComputing() {
 
 	t.AcceptState = t.Prompt("Which is the accept state? >>", scanner)
 
-	t.RejectState = t.Prompt("Which is the reject state? >>", scanner)
+	t.HaltOrRejectState = t.Prompt("Which is the halt or Reject state state? >>", scanner)
 
-	t.HaltState = t.Prompt("Which is the halt state? >>", scanner)
+	tapeSymbols := t.Prompt("Which are the tape symbols? >>", scanner)
+	tapeSymbolArr  := strings.Split(tapeSymbols, ",")
+	tapeSymbolMap := make(map[string]string)
+
+	for _ , val := range tapeSymbolArr{
+		tapeSymbolMap[val] = val
+	}
+
+	t.TapeSymbols = tapeSymbolMap
 
 	t.InitializeController(inputStatesArr)
 
-	for {
-		t.ProcessAndMoveCursor(t.CurrentTapeValue())
-		if t.Controller.GetCurrentState().GetIdentifier() == t.AcceptState || t.Controller.GetCurrentState().GetIdentifier() == t.RejectState || t.Controller.GetCurrentState().GetIdentifier() == t.HaltState {
+	for{
+		currentState :=t.Controller.GetCurrentState().GetIdentifier()
+		if currentState == t.AcceptState || currentState == t.HaltOrRejectState   {
 			break
 		}
+		t.ProcessAndMoveCursor(t.CurrentTapeValue())
+
 	}
 
 	if t.Controller.GetCurrentState().GetIdentifier() == t.AcceptState {
